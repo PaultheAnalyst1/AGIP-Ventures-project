@@ -1,0 +1,256 @@
+create database SalesProject;
+use SalesProject;
+show tables;
+
+select * from sales;
+-- 1) count rows
+select count(*) from sales;
+-- 2) rename table
+rename table sales to sales1;
+
+-- Column check
+select distinct `Transaction ID` from sales;
+-- No duplicates
+select distinct Date from sales;
+-- convert to sql date format
+select str_to_date(Date,'%d/%m/%Y') from sales;
+select * from sales;
+
+set sql_safe_updates = 0; 
+start transaction;
+rollback;
+
+update sales
+set Date = str_to_date(Date,'%d/%m/%Y');
+
+select distinct `Customer ID` from sales;
+-- No duplicates
+select distinct `Customer Name` from sales;
+-- Some names are duplicated, 3693 
+
+select * from sales;
+
+select distinct Gender from sales;
+-- No mistakes;
+select distinct age from sales;
+-- 43
+select distinct `Product ID` from sales;
+-- 10 forms
+describe sales;
+
+set sql_safe_updates = 0;
+start transaction;
+alter table sales
+change `Product ID` Product text;
+select distinct `Product Name` from sales;
+-- two product names
+select distinct Category from sales;
+-- two, same as product name
+select distinct `Quantity Sold` from sales;
+-- 15, 1 to 15
+alter table sales
+change `Quantity Sold` Quantity int(11);
+describe sales;
+select * from sales;
+select distinct `Unit Price`from sales;
+-- 4592
+select distinct `Total Sale Amount` from sales;
+-- 4923
+alter table sales
+change `Total Sale Amount` `Total Sale` text;
+select distinct `Payment Method` from sales;
+-- 6 payment methods.
+select distinct `Store Location` from sales;
+-- 8 locations
+alter table sales
+change `Store Location` Location text;
+select distinct `Salesperson ID` from sales;
+-- 100 `Salesperson ID`
+select distinct `Salesperson Name` from sales;
+-- 3740
+alter table sales
+change `Salesperson Name` `Sales Rep ID` text ;
+describe sales;
+select * from sales;
+select distinct`Discount Applied` from sales;
+-- 67
+select distinct `Return Status` from sales;
+-- 2
+
+-- AGGREGATION
+-- Min 
+select min(`Total Sale`) from sales;
+-- Max
+start transaction;
+rollback;
+select max(`Total Sale`) from sales;
+-- Sum
+select sum(`Total Sale`) from sales;
+alter table sales
+modify `Unit Price` int;
+-- The above is a mistake
+select `Total Sale` from sales;
+set sql_safe_updates = 0;
+start transaction;
+rollback;
+alter table sales
+modify `Total Sale` int(11);
+-- The above is a mistake.
+select * from sales;
+
+select `Total Sale` from sales;
+select sum(`Unit Price`) as SUM from  sales;
+describe sales;
+
+-- NOTE: To calculate with the price and sale columns, we need to clean the columns.
+-- We use replace statement to remove the unwanted.
+select replace(`Unit Price`,'$','') from sales;
+select min(`Unit Price`) from sales;
+set sql_safe_updates = 0;
+start transaction;
+update sales
+set `Unit Price` = replace(`Unit Price`,'$','');
+select sum(`Unit Price`) from sales;
+describe sales;
+alter table sales
+modify `Unit Price` int(11);
+
+-- Total Sale Column
+select distinct `Total Sale Amount` from sales;
+select min(`Total Sale Amount`) from sales;
+select max(`Total Sale Amount`) from sales;
+select replace(`Total Sale Amount`,'$','') from sales;
+start transaction;
+update sales
+set `Total Sale Amount` = replace(`Total Sale Amount`,'$','');
+select * from sales;
+alter table sales
+modify `Total Sale Amount` int(11);
+set sql_safe_updates = 0;
+start transaction;
+select sum(`Total Sale Amount`) from sales;
+
+alter table sales
+add column avg_unit_price decimal(6,3) after `Unit Price`;
+select avg(`Unit Price`) from sales;
+select round(`Unit Price`/5000,2) from sales;
+describe sales;
+
+update sales
+set avg_unit_price = round(`Unit Price`/5000,2);
+
+-- Product with highest sales volume.
+select Product, sum(Quantity) as 'Sales volume' from sales group by Product order by sum(Quantity) desc limit 1;
+
+select * from sales;
+-- Objectives
+-- 1) analyze customer demographics (age and gender)
+select max(age) from sales;
+select min(age) from sales;
+select Age, count(Age) from sales group by Age order by count(Age) desc ;
+select * from sales;
+-- Age group
+alter table sales
+add column `age group` text after age;
+select Age,
+case
+when Age between 18 and 29 then 'Young Adult'
+when Age between 30 and 39 then 'Adult'
+when Age between 40 and 49 then 'Middle Age'
+when Age between 50 and 60 then 'Old'
+End as '`age group`'
+from sales 
+order by `age group` desc;
+
+set sql_safe_updates = 0;
+start transaction;
+
+update sales
+set `age group` = case
+when Age between 18 and 29 then 'Young Adult'
+when Age between 30 and 39 then 'Adult'
+when Age between 40 and 49 then 'Middle Age'
+when Age between 50 and 60 then 'Old'
+End;
+
+select * from sales;
+select `age group`, count(`age group`) as age_amount from sales group by `age group` order by count(`age group`) desc;
+-- There is a fair distribution of age among the population with young adults having the highest and Adults having the lowest ditribution
+
+select gender, count(Gender) from sales group by Gender order by count(Gender) desc;
+-- There is a fair distribution among the gender with females being a bit more than the males
+
+-- 2. Payment method efficiency
+select `Payment Method`, count(`Payment Method`) from sales group by `Payment Method` order by count(`Payment Method`) desc;
+-- All payment methods are effective with cash having the highest usage
+
+-- 3. Evaluate sales by product
+select Product, count(Product) from sales group by product order by count(Product) desc;
+-- 	All products are well accepted by the market with power bank having the highest purchases
+
+-- 4. Revenue generated by location
+select Location, sum(`Total Sale`) from sales group by Location order by sum(`Total Sale`) desc;
+-- All locations have good sales with PortHarcourt having the highest and Jos having the lowest revenue generated
+-- New geopolitical zones should be considered for expansion since 4 out of 6 zones have good patronage
+
+-- 5. Salesrep effectiveness by total sales
+select distinct `Salesperson ID` from sales;
+select distinct `Sales Rep ID` from sales;
+select * from sales;
+alter table sales
+change `Sales Rep ID` `Sales Rep` text;
+ alter table sales
+change `Salesperson ID` `Sales Rep ID` text;
+select `Sales Rep`,location, sum(`Total Sale`) from sales group by `Sales Rep` order by sum(`Total Sale`) desc;
+-- Olamide Ifeyinwa from Jos is the most effective sales rep, he should be promoted to serve as a model to others like Chike Tunde with just 5 total sales
+-- Further analysis could be carried out to layoff non-functioning workers
+
+-- 6 Salesrep effectiveness by location
+select location, count(`Sales Rep`) from sales group by Location order by  count(`Sales Rep`) desc;
+-- Port Harcourt has the highest amount of sales rep which has influenced it's volume of sales, Jos is the opposite despite the fact that the best sale rep is from Jos.
+
+ -- 7 Return status vs location
+ select distinct `Return Status` from sales;
+ select location, count(`Return Status`) from sales where `Return Status` = 'returned' group by Location order by count(`Return Status`) desc;
+ -- Lagos has the highest amount of goods returned. Almost half of the products sold were returned which requires detailed attention to the quality
+ 
+ -- 8 Product by total sales
+ select Product, sum(`Total Sale`) from sales group by Product order by sum(`Total Sale`) desc;
+ -- Power Bank has the highest revenue in terms of sales
+ 
+ -- 9 Category vs total sales
+ select category, sum(`Total Sale`) from sales group by Category order by sum(`Total Sale`) desc;
+ -- Electronics has higher sales than accessories as expected.
+ 
+ -- 10 Product categorization
+ select distinct Product, Category from sales;
+ -- There are equal number of products in each category
+ 
+ select * from sales;
+ 
+ -- 11 Return rate
+ -- Use tableau calculated field to do it. 
+ 
+ /* 11. Return rate
+ select `Return Status`, count(`Return Status`) from sales group by `Return Status`;
+ select( select count(`Return Status`) from sales where `Return Status` = returned)/ select count(*)from sales;
+ select(count(case when `Return Status` = 'returned' then 1 End)
+ / count(*)) * 100 as Return_rate from sales;*/
+ 
+-- 11 Year trend
+ select  distinct year(Date) as year from sales;
+  -- month(Date) as month, dayofweek(Date) as weekday from sales;
+ -- The year is between 2021 to 2024
+ alter table sales
+ add column Year text after date;
+ select * from sales;
+ set sql_safe_updates = 0;
+ start transaction;
+ update sales
+ set Year = year(Date);
+ 
+
+
+ 
+ 
+
