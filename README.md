@@ -1,4 +1,4 @@
-# 🛒 AGIP Sales Analysis
+# 🛒 AGIP Ventures Sales Analysis
 
 This project explores an electronic sales dataset using SQL queries to uncover insights about revenue trends, customer demographics, and product performance.
 
