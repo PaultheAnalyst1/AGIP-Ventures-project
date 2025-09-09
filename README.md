@@ -1,3 +1,4 @@
+<img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/bb5ecf62-e738-4aa2-808c-eebcb2f041c2" />
 
 # 🛒 AGIP Sales Analysis
 
