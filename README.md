@@ -5,7 +5,6 @@ This project explores an electronic sales dataset using SQL queries to uncover i
 ---
 
  Dataset: AGIP Sales Dataset
-- **Source**: [In
 - **Size**: 5000 rows × 21 columns  
 
 ---
