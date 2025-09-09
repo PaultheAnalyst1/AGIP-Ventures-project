@@ -1,5 +1,3 @@
-<img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/bb5ecf62-e738-4aa2-808c-eebcb2f041c2" />
-
 # 🛒 AGIP Sales Analysis
 
 This project explores an electronic sales dataset using SQL queries to uncover insights about revenue trends, customer demographics, and product performance.
