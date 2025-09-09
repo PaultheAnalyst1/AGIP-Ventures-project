@@ -19,18 +19,9 @@ This project explores an electronic sales dataset using SQL queries to uncover i
 ---
 
 ## 🔍 Analysis Objectives
-1. Identify **top-selling products**.  
-2. Analyze **monthly and yearly sales trends**.  
-3. Find **repeat customers vs. one-time buyers**.  
-4. Calculate **average order value (AOV)**.  
-5. Segment customers by **purchase frequency and spending**.
-6.  Analyze the demographics of AGIP ventures customers. 
- Examine the total sales by product. 
-Evaluate the efficiency of the sales representatives.
- Compare locations and the revenue generated.
- Examine the return rate of each product.
-Analyze the sales pattern over the years.
-<img width="948" height="509" alt="image" src="https://github.com/user-attachments/assets/d2f54e88-e3f3-4151-be01-75d62a49b5db" />
- 
-
-
+1. Analyze **demographics of AGIP ventures customers**.  
+2. Examine the **total sales by product**.  
+3. Evaluate the **efficiency of the sales representatives**.  
+4. Compare **locations and the revenue generated**.  
+5. Examine **return rate of each product**.
+6.  Analyze **sales pattern over the years** 
