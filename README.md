@@ -7,15 +7,7 @@ This project explores an electronic sales dataset using SQL queries to uncover i
 
  Dataset: AGIP Sales Dataset
 - **Source**: [In
-- **Size**: X rows × Y columns  
-- **Key Fields**:  
-  - `order_id` – Unique order identifier  
-  - `customer_id` – Customer reference  
-  - `product_category` – Type of electronic product  
-  - `order_date` – Purchase date  
-  - `quantity` – Number of items sold  
-  - `price` – Price per unit  
-  - `revenue` – Computed as `quantity * price`
+- **Size**: 5000 rows × 21 columns  
 
 ---
 
@@ -27,10 +19,18 @@ This project explores an electronic sales dataset using SQL queries to uncover i
 ---
 
 ## 🔍 Analysis Objectives
-1. Identify **top-selling products and categories**.  
+1. Identify **top-selling products**.  
 2. Analyze **monthly and yearly sales trends**.  
 3. Find **repeat customers vs. one-time buyers**.  
 4. Calculate **average order value (AOV)**.  
-5. Segment customers by **purchase frequency and spending**.  
+5. Segment customers by **purchase frequency and spending**.
+6.  Analyze the demographics of AGIP ventures customers. 
+ Examine the total sales by product. 
+Evaluate the efficiency of the sales representatives.
+ Compare locations and the revenue generated.
+ Examine the return rate of each product.
+Analyze the sales pattern over the years.
+<img width="948" height="509" alt="image" src="https://github.com/user-attachments/assets/d2f54e88-e3f3-4151-be01-75d62a49b5db" />
+ 
 
 
