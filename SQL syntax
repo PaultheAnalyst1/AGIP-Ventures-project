@@ -31,9 +31,9 @@ select distinct `Customer Name` from sales;
 select * from sales;
 
 select distinct Gender from sales;
--- No mistakes;
+-- No errors;
 select distinct age from sales;
--- 43
+-- 43 distinct ages
 select distinct `Product ID` from sales;
 -- 10 forms
 describe sales;
@@ -88,14 +88,25 @@ select max(`Total Sale`) from sales;
 select sum(`Total Sale`) from sales;
 alter table sales
 modify `Unit Price` int;
--- The above is a mistake
+
+
+-- Year column
+select  distinct year(Date) as year from sales;
+ alter table sales
+ add column Year text after date;
+ select * from sales;
+ set sql_safe_updates = 0;
+ start transaction;
+ update sales
+ set Year = year(Date);
+
 select `Total Sale` from sales;
 set sql_safe_updates = 0;
 start transaction;
 rollback;
 alter table sales
 modify `Total Sale` int(11);
--- The above is a mistake.
+
 select * from sales;
 
 select `Total Sale` from sales;
@@ -228,29 +239,5 @@ select location, count(`Sales Rep`) from sales group by Location order by  count
  
  select * from sales;
  
- -- 11 Return rate
- -- Use tableau calculated field to do it. 
- 
- /* 11. Return rate
- select `Return Status`, count(`Return Status`) from sales group by `Return Status`;
- select( select count(`Return Status`) from sales where `Return Status` = returned)/ select count(*)from sales;
- select(count(case when `Return Status` = 'returned' then 1 End)
- / count(*)) * 100 as Return_rate from sales;*/
- 
--- 11 Year trend
- select  distinct year(Date) as year from sales;
-  -- month(Date) as month, dayofweek(Date) as weekday from sales;
- -- The year is between 2021 to 2024
- alter table sales
- add column Year text after date;
- select * from sales;
- set sql_safe_updates = 0;
- start transaction;
- update sales
- set Year = year(Date);
- 
 
-
- 
- 
 
